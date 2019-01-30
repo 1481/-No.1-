@@ -6,9 +6,17 @@ Begin VB.Form Form1
    ClientTop       =   510
    ClientWidth     =   3495
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5295
-   ScaleWidth      =   3495
+   ScaleHeight     =   15615
+   ScaleWidth      =   28560
    StartUpPosition =   3  '系統預設值
+   Begin VB.CommandButton Command6 
+      Caption         =   "確定"
+      Height          =   615
+      Left            =   10440
+      TabIndex        =   17
+      Top             =   840
+      Width           =   1815
+   End
    Begin VB.Frame Frame1 
       Caption         =   "Settings"
       Height          =   4812
@@ -237,6 +245,23 @@ Begin VB.Form Form1
       Visible         =   0   'False
       Width           =   1812
    End
+   Begin VB.Label Label7 
+      Caption         =   "請移動再鎖定座位"
+      BeginProperty Font 
+         Name            =   "微軟正黑體"
+         Size            =   14.25
+         Charset         =   136
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   1335
+      Left            =   7920
+      TabIndex        =   18
+      Top             =   3480
+      Width           =   2295
+   End
    Begin VB.Image Image1 
       Height          =   1212
       Index           =   0
@@ -413,30 +438,30 @@ End Sub
 Private Sub Command3_Click()
     For i = 0 To cols * rows - 1
         If Label1(i).Caption = Text1.Text Then
-            For X = 0 To cols * rows - 1
-                If Label1(X).ForeColor = vbMagenta Then
+            For x = 0 To cols * rows - 1
+                If Label1(x).ForeColor = vbMagenta Then
                     a = Label1(i).Caption
-                    Label1(i).Caption = Label1(X).Caption
-                    If Label1(X).Caption <> "v" Then
-                        Image1(i).Picture = LoadPicture("image/img (" & Label1(X).Caption & ").jpg")
+                    Label1(i).Caption = Label1(x).Caption
+                    If Label1(x).Caption <> "v" Then
+                        Image1(i).Picture = LoadPicture("image/img (" & Label1(x).Caption & ").jpg")
                     Else
                         Image1(i).Picture = LoadPicture("")
                         Label1(i).Caption = ""
                     End If
-                    Label1(X).Caption = a
+                    Label1(x).Caption = a
                     If a <> "" Then
-                        Image1(X).Picture = LoadPicture("image/img (" & a & ").jpg")
+                        Image1(x).Picture = LoadPicture("image/img (" & a & ").jpg")
                     Else
                         Image1(i).Picture = LoadPicture("")
-                        Label1(X).Caption = ""
+                        Label1(x).Caption = ""
                     End If
-                    If Label1(X).Caption = "v" Then
-                        Label1(X).ForeColor = vbBlack
-                        Label1(X).Caption = ""
-                    ElseIf Label1(X).Caption < girlCount + 1 Then
-                        Label1(X).ForeColor = vbRed
+                    If Label1(x).Caption = "v" Then
+                        Label1(x).ForeColor = vbBlack
+                        Label1(x).Caption = ""
+                    ElseIf Label1(x).Caption < girlCount + 1 Then
+                        Label1(x).ForeColor = vbRed
                     Else
-                        Label1(X).ForeColor = vbBlue
+                        Label1(x).ForeColor = vbBlue
                     End If
                     If Label1(i).Caption = "v" Then
                         Label1(i).ForeColor = vbBlack
@@ -447,7 +472,7 @@ Private Sub Command3_Click()
                         Label1(i).ForeColor = vbBlue
                     End If
                     Image1(i).BorderStyle = 0
-                    Image1(X).BorderStyle = 0
+                    Image1(x).BorderStyle = 0
                 End If
             Next
         End If
@@ -531,8 +556,8 @@ Private Sub Label1_Click(Index As Integer)
         Command3.Visible = False
     End If
 End Sub
-Private Sub Image1_DragDrop(Index As Integer, Source As Control, X As Single, Y As Single)
-    a = Label1(Index).Caption
+Private Sub Image1_DragDrop(Index As Integer, Source As Control, x As Single, Y As Single)
+    a = Label1(Index).Caption       'Step 2 自選座位
     Label1(Index).Caption = Label1(DID).Caption
     Label1(DID).Caption = a
     If Label1(Index).Caption = "" Then
@@ -560,12 +585,21 @@ Private Sub Image1_DragDrop(Index As Integer, Source As Control, X As Single, Y 
         Image1(DID).Picture = LoadPicture("")
     End If
 End Sub
-Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
-    Image1(Index).Drag vbBeginDrag
-    DID = Index
+Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, Y As Single)
+    If Button = 1 Then      'Step 2 自選座位
+        Image1(Index).Drag vbBeginDrag
+        DID = Index
+    ElseIf Button = 2 Then
+        Lock_Seat Index
+    End If
+End Sub
+
+Private Sub Lock_Seat(x)
+    Image1(x).Enabled = False       'Step 2 鎖住座位
+    Label1(x).Enabled = False
 End Sub
 
 Private Sub Command4_Click()
-    MsgBox "作者: HSNU 1481 11" & vbCrLf & "版權: 沒有版權" & vbCrLf & "版本: 2.0", vbOKOnly, "軟體資訊"
+    MsgBox "作者: HSNU 1481 11" & vbCrLf & "版權: 沒有版權" & vbCrLf & "版本: 2.0", vbOKOnly, "軟體資訊"        '版權資訊
 End Sub
 
