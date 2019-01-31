@@ -6,8 +6,8 @@ Begin VB.Form Form1
    ClientTop       =   510
    ClientWidth     =   3495
    LinkTopic       =   "Form1"
-   ScaleHeight     =   15615
-   ScaleWidth      =   28560
+   ScaleHeight     =   5295
+   ScaleWidth      =   3495
    StartUpPosition =   3  '系統預設值
    Begin VB.CommandButton Command6 
       Caption         =   "確定"
@@ -246,7 +246,7 @@ Begin VB.Form Form1
       Width           =   1812
    End
    Begin VB.Label Label7 
-      Caption         =   "請移動再鎖定座位"
+      Caption         =   "請先移動再鎖定座位"
       BeginProperty Font 
          Name            =   "微軟正黑體"
          Size            =   14.25
@@ -256,11 +256,11 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1335
-      Left            =   7920
+      Height          =   1815
+      Left            =   8160
       TabIndex        =   18
-      Top             =   3480
-      Width           =   2295
+      Top             =   3000
+      Width           =   1815
    End
    Begin VB.Image Image1 
       Height          =   1212
@@ -308,6 +308,8 @@ Dim totalCount As Integer
 Dim rows As Integer
 Dim cols As Integer
 Dim DID As Integer
+Dim LockedSeats As Integer
+LockedSeats = 0
 
 Private Sub Command5_Click()
     Frame1.Visible = False
@@ -364,6 +366,8 @@ Private Sub Command5_Click()
     Command4.Top = Label1(cols * rows - 1).Top - 100
     Command4.Left = Label1(cols * rows - 1).Left + Label1(cols * rows - 1).Width + 2000
     Me.Width = Command4.Left + Command4.Width + 400
+    Label7.Left = Command1.Left
+    Label7.Caption = "請先移動再鎖定座位" & vbCrLf & "左鍵拖曳移動" & vbCrLf & "右鍵鎖定"
 End Sub
 
 Private Sub Command1_Click()
@@ -595,6 +599,7 @@ Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integ
 End Sub
 
 Private Sub Lock_Seat(x)
+    LockedSeats = LockedSeats + 1
     Image1(x).Enabled = False       'Step 2 鎖住座位
     Label1(x).Enabled = False
 End Sub
@@ -602,4 +607,3 @@ End Sub
 Private Sub Command4_Click()
     MsgBox "作者: HSNU 1481 11" & vbCrLf & "版權: 沒有版權" & vbCrLf & "版本: 2.0", vbOKOnly, "軟體資訊"        '版權資訊
 End Sub
-
