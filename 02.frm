@@ -9,6 +9,15 @@ Begin VB.Form Form1
    ScaleHeight     =   5295
    ScaleWidth      =   3495
    StartUpPosition =   3  '系統預設值
+   Begin VB.CommandButton Command7 
+      Caption         =   "匯出"
+      Height          =   615
+      Left            =   8160
+      TabIndex        =   19
+      Top             =   4920
+      Visible         =   0   'False
+      Width           =   1815
+   End
    Begin VB.CommandButton Command6 
       Caption         =   "確定"
       Height          =   615
@@ -362,6 +371,7 @@ Private Sub Command5_Click()
     Command2.Left = Command1.Left
     Command3.Left = Command1.Left + Command1.Width - Command3.Width
     Command6.Left = Command1.Left
+    Command7.Left = Command1.Left
     Text1.Left = Command1.Left
     Text1.Height = 615
     Command4.Top = Label1(cols * rows - 1).Top - 100
@@ -398,6 +408,7 @@ Private Sub Command1_Click()
         End If
     Next
     Command2.Visible = False
+    Command7.Visible = True
 End Sub
 
 Private Sub Command2_Click()
@@ -499,6 +510,20 @@ Private Sub Command6_Click()
     Command6.Visible = False
     Command1.Visible = True
     Label7.Caption = "按下上方的排座位按鈕來進行排序"
+End Sub
+
+Private Sub Command7_Click()
+    Dim data As String
+    data = "<style>table, th, td {border: 1px solid black;text-align: center;}h2{line-height: 0;}</style><table style='width:" & 120 * cols & "'>"
+    For i = 1 To rows
+        data = data & "<tr>"
+        For j = 1 To cols
+            data = data & "<td><img src='image/img (" & Label1(i * j - 1).Caption & ").jpg'><h2>" & Label1(i * j - 1).Caption & "</h2></td>"
+        Next
+        data = data & "</tr>"
+    Next
+    data = data & "</table>"
+    WriteFile "Seats.html", data
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
@@ -621,3 +646,12 @@ End Sub
 Private Sub Command4_Click()
     MsgBox "作者: HSNU 1481 11" & vbCrLf & "版權: 沒有版權" & vbCrLf & "版本: 2.0", vbOKOnly, "軟體資訊"        '版權資訊
 End Sub
+
+Sub WriteFile(fileName As String, fileContent As String)
+    Dim fsysTemp As New FileSystemObject
+    Dim tstrTemp As TextStream
+    Set tstrTemp = fsysTemp.CreateTextFile(fileName)
+    tstrTemp.Write fileContent
+    tstrTemp.Close
+End Sub
+
