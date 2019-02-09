@@ -309,10 +309,9 @@ Dim rows As Integer
 Dim cols As Integer
 Dim DID As Integer
 Dim LockedSeats As Integer
-LockedSeats = 0
 
 Private Sub Command5_Click()
-    Frame1.Visible = False
+    Frame1.Visible = False      'System Settings (Step 1)
     girlCount = Int(Text4.Text)
     totalCount = Int(Text4.Text) + Int(Text5.Text)
     cols = Int(Text3.Text)
@@ -356,11 +355,13 @@ Private Sub Command5_Click()
     Label1(0).Caption = 1
     Label1(0).ForeColor = vbRed
     Command2.Visible = False
-    Command1.Visible = True
+    Command1.Visible = False
+    Command6.Visible = True
     Me.Height = Label1(cols * rows - 1).Top + Label1(cols * rows - 1).Height + 100
     Command1.Left = Image1(cols - 1).Left + Image1(cols - 1).Width + 300
     Command2.Left = Command1.Left
     Command3.Left = Command1.Left + Command1.Width - Command3.Width
+    Command6.Left = Command1.Left
     Text1.Left = Command1.Left
     Text1.Height = 615
     Command4.Top = Label1(cols * rows - 1).Top - 100
@@ -368,25 +369,32 @@ Private Sub Command5_Click()
     Me.Width = Command4.Left + Command4.Width + 400
     Label7.Left = Command1.Left
     Label7.Caption = "請先移動再鎖定座位" & vbCrLf & "左鍵拖曳移動" & vbCrLf & "右鍵鎖定"
+    LockedSeats = 0
 End Sub
 
 Private Sub Command1_Click()
     For i = 1 To cols * rows - 1
-        Label1(i).Caption = ""
-        Image1(i).Picture = LoadPicture("")
+        If Label1(i).Enabled = True Then
+            Label1(i).Caption = ""
+            Image1(i).Picture = LoadPicture("")
+        End If
     Next
+    If Label1(0).Enabled = True Then
         Label1(0).Caption = ""
+    End If
     For i = 1 To totalCount
-        a = Int(Rnd * (cols * rows))
-        While Label1(a).Caption <> ""
+        If Label1(i - 1).Enabled = True Then
             a = Int(Rnd * (cols * rows))
-        Wend
-        Label1(a).Caption = i
-        Image1(a).Picture = LoadPicture("image/img (" & i & ").jpg")
-        If Label1(a).Caption < girlCount + 1 Then
-            Label1(a).ForeColor = vbRed
-        Else
-            Label1(a).ForeColor = vbBlue
+            While Label1(a).Caption <> "" Or Label1(a).Enabled = False
+                a = Int(Rnd * (cols * rows))
+            Wend
+            Label1(a).Caption = i
+            Image1(a).Picture = LoadPicture("image/img (" & i & ").jpg")
+            If Label1(a).Caption < girlCount + 1 Then
+                Label1(a).ForeColor = vbRed
+            Else
+                Label1(a).ForeColor = vbBlue
+            End If
         End If
     Next
     Command2.Visible = False
@@ -485,6 +493,12 @@ Private Sub Command3_Click()
     Command2.Visible = False
     Text1.Visible = False
     Command3.Visible = False
+End Sub
+
+Private Sub Command6_Click()
+    Command6.Visible = False
+    Command1.Visible = True
+    Label7.Caption = "按下上方的排座位按鈕來進行排序"
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
