@@ -409,6 +409,7 @@ Private Sub Command1_Click()
     Next
     Command2.Visible = False
     Command7.Visible = True
+    Label7.Caption = "可以使用下方「匯出」輸出HTML檔"
 End Sub
 
 Private Sub Command2_Click()
@@ -524,6 +525,7 @@ Private Sub Command7_Click()
     Next
     data = data & "</table>"
     WriteFile "Seats.html", data
+    Label7.Caption = "Seats.html 已匯出(位於此程式所在資料夾)"
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
