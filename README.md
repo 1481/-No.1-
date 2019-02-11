@@ -1,1 +1,0 @@
-# SEATS APP.
