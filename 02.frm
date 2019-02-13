@@ -519,7 +519,7 @@ Private Sub Command7_Click()
     For i = 1 To rows
         data = data & "<tr>"
         For j = 1 To cols
-            data = data & "<td><img src='image/img (" & Label1(i * j - 1).Caption & ").jpg'><h2>" & Label1(i * j - 1).Caption & "</h2></td>"
+            data = data & "<td><img src='image/img (" & Label1((i - 1) * cols + j - 1).Caption & ").jpg'><h2>" & Label1((i - 1) * cols + j - 1).Caption & "</h2></td>"
         Next
         data = data & "</tr>"
     Next
